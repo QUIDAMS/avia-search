@@ -8,12 +8,11 @@ export default class App extends Component {
 		oneTransfer: false,
 		direct: false,
 		flights: [],
-		ticketsPerPage: 30,
-		minPrice: null,
-		maxPrice: null,
+		ticketsPerPage: 10,
+		minPrice: '',
+		maxPrice: '',
 		aeroflot: false,
 		lotPolish: false,
-		// добавить поле hide
 	}
 
 	getTickets() {
@@ -38,7 +37,6 @@ export default class App extends Component {
 
 	onChangeFilter(e){
 		const {name, checked} = e.target;
-
 		return(
 			this.setState({[name]: checked})
 		)
@@ -82,10 +80,9 @@ export default class App extends Component {
 							aeroflot={this.state.aeroflot}
 							lotPolish={this.state.lotPolish}
 							onChangeAirline={(e) => this.onChangeAirline(e)}
-
 						/>
 					</div>
-					<div className="col-sm-8 col-md-9 col-12">
+					<div className="col-sm-8 col-md-9 col-12 ">
 						<AllTickets 
 							sort={this.state.sort}
 							oneTransfer={this.state.oneTransfer}
@@ -97,10 +94,12 @@ export default class App extends Component {
 							aeroflot={this.state.aeroflot}
 							lotPolish={this.state.lotPolish}
 						/>
-						<button 
-							type="button" 
-							className="btn-lg btn-block"
-							onClick={() => this.onChangeTicketsPerPage()}>Показать еще</button>
+						<div className="text-center my-5">
+							<button 
+								type="button" 
+								className="button-show"
+								onClick={() => this.onChangeTicketsPerPage()}>Показать еще</button>
+						</div>
 					</div>
 				</div>
 			</div>

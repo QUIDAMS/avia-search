@@ -1,7 +1,5 @@
 import React from 'react';
 
-
-
 const  Menu = ({chooseSort, onChangeFilter, oneTransfer, direct, minPrice, maxPrice, onChangePrice, onChangeAirline, lotPolish, aeroflot}) => {
 	return(
 		<div className="left-menu">
@@ -39,7 +37,6 @@ const  Menu = ({chooseSort, onChangeFilter, oneTransfer, direct, minPrice, maxPr
 							/>
 							<label htmlFor="timeDesc"> - по времени в пути </label>
 						</div>
-						
 					</div>
 				</form>
 			</div>

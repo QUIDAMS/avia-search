@@ -5,24 +5,24 @@ import 'moment/locale/ru';
 
 const Ticket = (props) => {
 	const {flight} = props;
+	const airline = flight.carrier.caption;
+	const allLegs = flight.legs.map((leg, i, arr) => {
+		const firstSegment = leg.segments[0];
+		const departureCity = (firstSegment.departureCity && firstSegment.departureCity.caption) || '[Not found]';
+		const departureAirport = firstSegment.departureAirport.caption;
+		const departureAbbreviation = firstSegment.departureAirport.uid;
+		const departureDate = firstSegment.departureDate;
 
-	const allLegs = flight.legs.map((leg) => {
-		const allSegmentsPlace = leg.segments.map((segment) => {
-			const departureCity = (segment.departureCity && segment.departureCity.caption) || '[Not found]';
-			const departureAirport = segment.departureAirport.caption;
-			const departureAbbreviation = segment.departureAirport.uid;
+		const lastSegment = leg.segments[leg.segments.length - 1];
+		const arrivalCity = (lastSegment.arrivalCity && lastSegment.arrivalCity.caption) || '[Not found]';
+		const arrivalAirport = lastSegment.arrivalAirport.caption;
+		const arrivalAbbreviation = lastSegment.arrivalAirport.uid;
+		const arrivalDate = lastSegment.arrivalDate;
+		const travelDuration = leg.duration;
 
-			const arrivalCity = (segment.arrivalCity && segment.arrivalCity.caption) || '[Not found]';
-			const arrivalAirport = segment.arrivalAirport.caption;
-			const arrivalAbbreviation = segment.arrivalAirport.uid;
-
-			const arrivalDate = segment.arrivalDate;
-			const departureDate = segment.departureDate;
-			const travelDuration = segment.travelDuration;
-
-			const airline = segment.airline.caption;
-			return(
-				<React.Fragment>
+		return(
+			<React.Fragment key={i}>
+				<div className="ticket__body">		
 					<span className='ticket__airports'>
 						{departureCity}, {departureAirport}
 						<span className="blue-text"> ({departureAbbreviation})</span>
@@ -48,7 +48,7 @@ const Ticket = (props) => {
 							<div className="col text-center">
 								<span className="ticket__time">
 									<span className="ticket__time">
-													&#128340;&nbsp;{moment.unix(travelDuration*60).utc().format('H [ч] m [мин] ')}
+										&#128340;&nbsp;{moment.unix(travelDuration*60).utc().format('H [ч] m [мин] ')}
 									</span>
 								</span>
 							</div>
@@ -65,23 +65,13 @@ const Ticket = (props) => {
 	            	</span> 
 							</div>
 					</div>
-					<div className="text-center text-orange"> 1 пересадка </div>
+					{leg.segments.length > 1 && <div className="text-center text-orange title"> {leg.segments.length - 1} пересадка </div> }
 					<div className="mt-2">Рейс выполняет: {airline}</div>
-					<hr className="blue" />
-				</React.Fragment>
-			)
-		})
-
-		return(
-			<React.Fragment>
-				<div className="ticket__body">		
-					{allSegmentsPlace}
+					<div>{i !== (arr.length-1) ? <hr className="blue" /> : ''} </div>
 				</div>
-				
 			</React.Fragment>
 		)
 	})
-// Заменить на totalFeeAndTaxes  passengerPrices[0].feeAndTaxes.amount в 94 строке
 	return( 
 		<>
 			<div className="ticket mb-5">
@@ -91,16 +81,14 @@ const Ticket = (props) => {
 							<img src={process.env.PUBLIC_URL + '/img/polish.png'} className='ticket__airline-logo' alt="" />
 						</div>
 						<div className="col text-right pt-2 mr-2">
-							<div className="ticket__price">{parseInt(flight.price.passengerPrices[0].feeAndTaxes.amount)} {flight.price.passengerPrices[0].feeAndTaxes.currency}</div> 
+							<div className="ticket__price">{parseInt(flight.price.totalFeeAndTaxes.amount)} {flight.price.totalFeeAndTaxes.currency}</div> 
 							<div className="ticket__price-info">Стоимость для одного взрослого пассажира</div>
 						</div>
 					</div>
 				</div>
-				
 				{allLegs}
 				<button className='btn btn-block btn-orange mb-5'><div className='py-2'>Выбрать</div></button>
 			</div>
-			
 		</>
 	)
 }

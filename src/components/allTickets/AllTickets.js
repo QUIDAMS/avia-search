@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Ticket from "../ticket";
 
-
 export default class AllTickets extends Component {
 	sortFlights(flights, sort) {
 		return flights.sort((a, b) => {
@@ -58,8 +57,6 @@ export default class AllTickets extends Component {
 			if(aeroflot){
 				filters.push(flight.flight.carrier.caption === "Аэрофлот - российские авиалинии")
 			}
-
-			
 			return filters.length === 0 ? true : filters.some(value => value === true)
 		})
 	}
@@ -97,7 +94,6 @@ export default class AllTickets extends Component {
 	render() {
 		const {sort, oneTransfer, direct, flights, ticketsPerPage, minPrice, maxPrice, aeroflot, lotPolish} = this.props;
 		let sortedFlights = this.applyFilters(flights, sort, direct, oneTransfer, ticketsPerPage, minPrice, maxPrice, aeroflot, lotPolish)
-
 		const allflights = sortedFlights.map((flight, i) => {
 			return <Ticket key={i} flight={flight.flight}/>
 		})
