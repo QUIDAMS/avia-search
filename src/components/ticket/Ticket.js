@@ -7,13 +7,12 @@ const Ticket = (props) => {
 	const {flight} = props;
 
 	const allLegs = flight.legs.map((leg) => {
-		console.log(leg.segments)
 		const allSegmentsPlace = leg.segments.map((segment) => {
-			const departureCity = segment.departureCity.caption;
+			const departureCity = (segment.departureCity && segment.departureCity.caption) || '[Not found]';
 			const departureAirport = segment.departureAirport.caption;
 			const departureAbbreviation = segment.departureAirport.uid;
 
-			const arrivalCity = segment.arrivalCity.caption;
+			const arrivalCity = (segment.arrivalCity && segment.arrivalCity.caption) || '[Not found]';
 			const arrivalAirport = segment.arrivalAirport.caption;
 			const arrivalAbbreviation = segment.arrivalAirport.uid;
 
@@ -22,7 +21,6 @@ const Ticket = (props) => {
 			const travelDuration = segment.travelDuration;
 
 			const airline = segment.airline.caption;
-			console.log('travelDuration', travelDuration)
 			return(
 				<React.Fragment>
 					<span className='ticket__airports'>

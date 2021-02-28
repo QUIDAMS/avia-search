@@ -3,24 +3,66 @@ import Ticket from "../ticket";
 
 
 export default class AllTickets extends Component {
-
-	state = {
-		data: null,
+	sortFlights(flights, sort) {
+		return flights.sort((a, b) => {
+			switch (sort) {
+			  case "risePrice":
+					return a.flight.price.totalFeeAndTaxes.amount - b.flight.price.totalFeeAndTaxes.amount;
+			  case "decreasePrice":
+					return b.flight.price.totalFeeAndTaxes.amount - a.flight.price.totalFeeAndTaxes.amount;
+			  case "travelTime":
+			  	const aa = a.flight.legs.reduce(
+			  		(previousValue, currentValue) => {
+			  			return previousValue + currentValue.duration;
+						}, 0
+					) 
+			  	const bb = b.flight.legs.reduce(
+			  		(previousValue, currentValue) => {
+			  			return previousValue + currentValue.duration;
+			  		}, 0
+			  	)
+			  	return aa - bb;
+			  default:
+			  	return null;
+			}
+		})
 	}
 
-	componentDidMount(){
-		fetch('flights.json')
-		.then((response) => response.json())
-		.then((data) => this.setState({data}))
-		.catch((error) => console.error('Error', error));
+	filterFlights(flights, direct, oneTransfer) {
+		return flights.filter(flight => {
+			return flight.flight.legs.every(leg => {
+				
+				let filters = []
+				
+				if(direct) {
+					filters.push(leg.segments.length === 1)
+				}
+
+				if(oneTransfer) {
+					filters.push(leg.segments.length === 2)
+				}
+				return filters.length === 0 ? true : filters.some(value => value === true) // если хотябы 1 true
+			})
+		})
 	}
+
+	pagination(flights, ticketsPerPage) {
+		return flights.slice(0, ticketsPerPage)
+	}
+
+	applyFilters(flights, sort, direct, oneTransfer, ticketsPerPage) {
+		let f = flights
+		f = this.filterFlights(f, direct, oneTransfer)
+		f = this.sortFlights(f, sort)
+		f = this.pagination(f, ticketsPerPage)
+		return f
+	}
+
 	render() {
-		const {data} = this.state;
-		if (!data) {
-			return null
-		}
-		// eslint-disable-next-line array-callback-return
-		const allflights = data.result.flights.slice(0,3).map((flight, i) => {
+		const {sort, oneTransfer, direct, flights, ticketsPerPage } = this.props;
+		let sortedFlights = this.applyFilters(flights, sort, direct, oneTransfer, ticketsPerPage)
+
+		const allflights = sortedFlights.map((flight, i) => {
 			return<Ticket key={i} flight={flight.flight}/>
 		})
 		return (
