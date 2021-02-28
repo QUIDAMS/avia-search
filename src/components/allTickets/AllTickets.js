@@ -46,6 +46,24 @@ export default class AllTickets extends Component {
 		})
 	}
 
+	filterAirline(flights, aeroflot, lotPolish){
+		return flights.filter(flight => {
+
+			let filters = []
+
+			if(lotPolish){
+				filters.push(flight.flight.carrier.caption === "LOT Polish Airlines")
+			}
+
+			if(aeroflot){
+				filters.push(flight.flight.carrier.caption === "Аэрофлот - российские авиалинии")
+			}
+
+			
+			return filters.length === 0 ? true : filters.some(value => value === true)
+		})
+	}
+
 	pagination(flights, ticketsPerPage) {
 		return flights.slice(0, ticketsPerPage)
 	}
@@ -66,18 +84,19 @@ export default class AllTickets extends Component {
 		})
 	}
 
-	applyFilters(flights, sort, direct, oneTransfer, ticketsPerPage, minPrice, maxPrice) {
+	applyFilters(flights, sort, direct, oneTransfer, ticketsPerPage, minPrice, maxPrice, aeroflot, lotPolish) {
 		let f = flights
 		f = this.filterFlights(f, direct, oneTransfer)
 		f = this.priceFilter(f, minPrice, maxPrice)
 		f = this.sortFlights(f, sort)
+		f = this.filterAirline(f, aeroflot, lotPolish)
 		f = this.pagination(f, ticketsPerPage)
 		return f
 	}
 
 	render() {
-		const {sort, oneTransfer, direct, flights, ticketsPerPage, minPrice, maxPrice} = this.props;
-		let sortedFlights = this.applyFilters(flights, sort, direct, oneTransfer, ticketsPerPage, minPrice, maxPrice)
+		const {sort, oneTransfer, direct, flights, ticketsPerPage, minPrice, maxPrice, aeroflot, lotPolish} = this.props;
+		let sortedFlights = this.applyFilters(flights, sort, direct, oneTransfer, ticketsPerPage, minPrice, maxPrice, aeroflot, lotPolish)
 
 		const allflights = sortedFlights.map((flight, i) => {
 			return <Ticket key={i} flight={flight.flight}/>

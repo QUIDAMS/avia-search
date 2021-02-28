@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-const  Menu = ({chooseSort, onChangeFilter, oneTransfer, direct, minPrice, maxPrice, onChangePrice}) => {
+const  Menu = ({chooseSort, onChangeFilter, oneTransfer, direct, minPrice, maxPrice, onChangePrice, onChangeAirline, lotPolish, aeroflot}) => {
 	return(
 		<div className="left-menu">
 			<div className="left-menu__item">
@@ -102,12 +102,26 @@ const  Menu = ({chooseSort, onChangeFilter, oneTransfer, direct, minPrice, maxPr
 				<div className="left-menu__item-title">Авиакомпании</div>
 				<form>
 					<div className="form-group mb-0">
-						<input type="checkbox" className="mr-1" id="oneTransfer" />
-						<label htmlFor="oneTransfer"> - LOT Polish </label>
+						<input 
+							type="checkbox" 
+							className="mr-1" 
+							id="lotPolish" 
+							name="lotPolish"
+							checked={lotPolish}
+							onChange={(e) => onChangeAirline(e)}
+						/>
+						<label htmlFor="lotPolish"> - LOT Polish </label>
 					</div>
 					<div className="form-group mb-0">
-						<input type="checkbox" className="mr-1" id="noTransfer" />
-						<label htmlFor="noTransfer"> - Аэрофлот </label>
+						<input 
+							type="checkbox" 
+							className="mr-1" 
+							id="aeroflot" 
+							name="aeroflot"
+							checked={aeroflot}
+							onChange={(e) => onChangeAirline(e)}
+						/>
+						<label htmlFor="aeroflot"> - Аэрофлот </label>
 					</div>
 				</form>
 			</div>

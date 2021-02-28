@@ -8,9 +8,11 @@ export default class App extends Component {
 		oneTransfer: false,
 		direct: false,
 		flights: [],
-		ticketsPerPage: 3,
+		ticketsPerPage: 30,
 		minPrice: null,
 		maxPrice: null,
+		aeroflot: false,
+		lotPolish: false,
 		// добавить поле hide
 	}
 
@@ -57,6 +59,13 @@ export default class App extends Component {
 		this.setState({[field]: val})
 	}
 
+	onChangeAirline(e){
+		const {name, checked} = e.target;
+		return(
+			this.setState({[name]: checked})
+		)
+	}
+
 	render(){
 		return (
 			<div className="container-fluid">
@@ -70,6 +79,10 @@ export default class App extends Component {
 							minPrice={this.state.minPrice}
 							maxPrice={this.state.maxPrice}
 							onChangePrice={(e, field) => this.onChangePrice(e, field)}
+							aeroflot={this.state.aeroflot}
+							lotPolish={this.state.lotPolish}
+							onChangeAirline={(e) => this.onChangeAirline(e)}
+
 						/>
 					</div>
 					<div className="col-sm-8 col-md-9 col-12">
@@ -81,6 +94,8 @@ export default class App extends Component {
 							minPrice={this.state.minPrice}
 							maxPrice={this.state.maxPrice}
 							ticketsPerPage={this.state.ticketsPerPage}
+							aeroflot={this.state.aeroflot}
+							lotPolish={this.state.lotPolish}
 						/>
 						<button 
 							type="button" 
