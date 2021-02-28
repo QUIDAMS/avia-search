@@ -50,20 +50,37 @@ export default class AllTickets extends Component {
 		return flights.slice(0, ticketsPerPage)
 	}
 
-	applyFilters(flights, sort, direct, oneTransfer, ticketsPerPage) {
+	priceFilter(flights, minPrice, maxPrice){
+		return flights.filter((flight) => {
+
+			if(!minPrice) {
+				minPrice = 0
+			}
+
+			if(!maxPrice) {
+				maxPrice = Infinity
+			}
+			return (
+				flight.flight.price.totalFeeAndTaxes.amount >= minPrice && flight.flight.price.totalFeeAndTaxes.amount <= maxPrice
+			) 
+		})
+	}
+
+	applyFilters(flights, sort, direct, oneTransfer, ticketsPerPage, minPrice, maxPrice) {
 		let f = flights
 		f = this.filterFlights(f, direct, oneTransfer)
+		f = this.priceFilter(f, minPrice, maxPrice)
 		f = this.sortFlights(f, sort)
 		f = this.pagination(f, ticketsPerPage)
 		return f
 	}
 
 	render() {
-		const {sort, oneTransfer, direct, flights, ticketsPerPage } = this.props;
-		let sortedFlights = this.applyFilters(flights, sort, direct, oneTransfer, ticketsPerPage)
+		const {sort, oneTransfer, direct, flights, ticketsPerPage, minPrice, maxPrice} = this.props;
+		let sortedFlights = this.applyFilters(flights, sort, direct, oneTransfer, ticketsPerPage, minPrice, maxPrice)
 
 		const allflights = sortedFlights.map((flight, i) => {
-			return<Ticket key={i} flight={flight.flight}/>
+			return <Ticket key={i} flight={flight.flight}/>
 		})
 		return (
 			<div>{allflights}</div>

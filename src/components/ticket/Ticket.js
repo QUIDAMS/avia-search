@@ -81,7 +81,7 @@ const Ticket = (props) => {
 			</React.Fragment>
 		)
 	})
-
+// Заменить на totalFeeAndTaxes  passengerPrices[0].feeAndTaxes.amount в 94 строке
 	return( 
 		<>
 			<div className="ticket mb-5">
@@ -91,7 +91,7 @@ const Ticket = (props) => {
 							<img src={process.env.PUBLIC_URL + '/img/polish.png'} className='ticket__airline-logo' alt="" />
 						</div>
 						<div className="col text-right pt-2 mr-2">
-							<div className="ticket__price">{parseInt(flight.price.passengerPrices[0].feeAndTaxes.amount)} {flight.price.passengerPrices[0].feeAndTaxes.currency}</div>
+							<div className="ticket__price">{parseInt(flight.price.passengerPrices[0].feeAndTaxes.amount)} {flight.price.passengerPrices[0].feeAndTaxes.currency}</div> 
 							<div className="ticket__price-info">Стоимость для одного взрослого пассажира</div>
 						</div>
 					</div>

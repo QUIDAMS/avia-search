@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-const  Menu = ({chooseSort, onChangeFilter, oneTransfer, direct}) => {
+const  Menu = ({chooseSort, onChangeFilter, oneTransfer, direct, minPrice, maxPrice, onChangePrice}) => {
 	return(
 		<div className="left-menu">
 			<div className="left-menu__item">
@@ -77,11 +77,23 @@ const  Menu = ({chooseSort, onChangeFilter, oneTransfer, direct}) => {
 				<form>
 					<div className="form-group mb-3">
 						<label htmlFor="oneTransfer" className="mr-1">От</label>
-						<input type="text" id="oneTransfer" />
+						<input 
+							placeholder="0" 
+							type="text" 
+							id="oneTransfer" 
+							onChange={(e) => onChangePrice(e, "minPrice")}
+							value={minPrice}
+						/>
 					</div>
 					<div className="form-group mb-3">
 						<label htmlFor="noTransfer" className="mr-1">До</label>
-						<input type="text" id="noTransfer" />
+						<input 
+							placeholder="100000" 
+							type="text" 
+							id="noTransfer" 
+							onChange={(e) => onChangePrice(e, "maxPrice")}
+							value={maxPrice}
+						/>
 					</div>
 				</form>
 			</div>
